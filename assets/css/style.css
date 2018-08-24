@@ -1,0 +1,33 @@
+/* GLOBAL sWITCH TO BOARDER-BOX, TEXT-ALIGN CENTER AND THE CLEARFIX */
+
+* {
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  h1{
+      color: green;
+  }
+
+  .container{
+    border: 2px solid red;
+  }
+
+  .row{
+    border: 2px solid blue;  
+  }
+
+  .col {
+      border: 2px solid black;
+      margin: 3px;
+      background-color: lightsteelblue;
+  }
+
+  .question{
+      height: 400px;
+  }
+
+  .option{
+      margin: 5px;
+      background-color: lightgreen;
+  }
