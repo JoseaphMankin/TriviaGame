@@ -5,6 +5,10 @@
     text-align: center;
   }
 
+  body{
+      background-color: lightgoldenrodyellow;
+  }
+
   h1{
       color: green;
   }
