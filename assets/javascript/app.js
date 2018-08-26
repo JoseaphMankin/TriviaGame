@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
-    //Questions. Array holding objects. Each object will be the question w/ 4 answers
-    //and a value showing which is true.
+    //Questions are an Array holding objects. Each object will be the question w/ 4 answers and the correctPick
 
     let questions = [
         {
@@ -37,6 +36,7 @@ $(document).ready(function () {
 
     //  When the start button gets clicked, question 0 loaded, show buttons and execute the run clock function.
     $(".startBtn").on("click", function () {
+        reset();
 
         $(".questionDiv").text(questions[currentQuestion].question);
         $(".opt1").text(questions[currentQuestion].answerA);
@@ -53,21 +53,16 @@ $(document).ready(function () {
     //On-click event when user chooses an answer
     $(".optionBtn").on("click", function () {
         var userGuess = $(this).text();
-        // clearInterval(counter);
 
         //If user chooses correct answer
         if (userGuess === questions[currentQuestion].correctPick) {
             console.log("That's Right");
             $(".questionDiv").text("THAT'S RIGHT. The Answer is " +questions[currentQuestion].correctPick);
             correctAns++;
-            $(".optionBtn").off();
+            // $(".optionBtn").off();
             stop();
-            // $(".time-div").hide();
-            // $(".answer-div").hide();
-            // $(".question-div").html(
             //     "<h2 class='text-danger'> Correct!" + "</h2>" +
             //     "<img src='https://media0.giphy.com/media/rTg5MCCGlpvMs/200.webp' alt='CORRECT' class='img-fluid'>"
-            // );
         }
 
         //If user chooses incorrect answer
@@ -75,51 +70,50 @@ $(document).ready(function () {
             console.log("That's Wrong")
             $(".questionDiv").text("SORRY. The Answer was " +questions[currentQuestion].correctPick);
             incorrectAns++;
-            $(".optionBtn").off();
+            // $(".optionBtn").off();
             stop();
             // incorrect();
         }
     });
 
-
+    //ALL THE TIMER OPERATIONS START HERE
 
     //  Run starts the clock and also fires toggle decrement function once a second
-    //  Clearing the intervalId prior to setting our new intervalId will not allow multiple instances.
     function run() {
-        clearInterval(intervalId);
+        clearInterval(intervalId); //probably not needed, but keeping just in case
         intervalId = setInterval(decrement, 1000);
         $(".timer").html("<h2> TIME REMAINING: " + timeLeft + "</h2>");
     }
 
-    //  The decrement function for counting down the clock
+    //  The decrement function for counting down the clock and showing remaining time
     function decrement() {
         timeLeft--;
         $(".timer").html("<h2> TIME REMAINING: " + timeLeft + "</h2>");
 
-        //  Once number hits zero...
+        //  If time runs out...
         if (timeLeft === 0) {
             noAns++;
-            $(".optionBtn").toggle();
+            // $(".optionBtn").toggle();
             $(".questionDiv").text("TIME UP. The Answer was " +questions[currentQuestion].correctPick);
-            //  ...run the stop function.
+            //  Pass to stop.
             stop();
 
         }
     }
 
-    //  The stop function
+    //  The stop function clears the interval, resets the timer and hands over reloader after 3 seconds
     function stop() {
        
         clearInterval(intervalId);
         timeLeft = 5;
-        setTimeout(fiveSeconds, 1000 * 3);
+        setTimeout(reloader, 1000 * 3);
         
     }
 
-    function fiveSeconds() {
+    //cues up next question or takes you final score if you've reached the end.   
+    function reloader() {
         currentQuestion++;
-        if(currentQuestion <2){
-            $(".optionBtn").on();
+        if(currentQuestion < questions.length){
         $(".questionDiv").text(questions[currentQuestion].question);
         $(".opt1").text(questions[currentQuestion].answerA);
         $(".opt2").text(questions[currentQuestion].answerB);
@@ -134,12 +128,21 @@ $(document).ready(function () {
     }
 
     function finalScreen(){
-        $(".questionDiv").text("You Got " + correctAns + " correct! You got " + incorrectAns + " incorrect. You didn't answer " + noAns + ". Play again?");  
+        $(".questionDiv").text("You Got " + correctAns + " correct! You got " + incorrectAns + " incorrect. You didn't answer " + noAns + ". Play again?");
+        currentQuestion = 0; 
+        $(".startBtn").text("CLICK TO PLAY AGAIN!")
+        $(".startBtn").show();
+
     }
 
+    function reset(){
+        timeLeft = 5;
+        intervalId;
+        currentQuestion = 0;
+        correctAns = 0;
+        incorrectAns = 0;
+        noAns = 0;
+    }
 
-    // answer picked. right answer shown for 5 seconds
-    // Next question presented. repeat for x questions.
-    // After all questions asked, present Right/Wrong/Didn't answer. Restart button
 
 });
