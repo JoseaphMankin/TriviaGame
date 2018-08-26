@@ -4,23 +4,129 @@ $(document).ready(function () {
 
     let questions = [
         {
-            question: "What's the name of Eddard Stark's Sword?",
+            question: "Littlefinger Question?",
             answerA: "Stabby",
             answerB: "Shiny",
             answerC: "Pokey",
             answerD: "Ice",
-            correctPick: "Ice"
+            correctPick: "Ice",
+            image: '<img src="assets/images/littlefinger1.jpg" alt="image">',
+            gif: '<img src="assets/images/littlefinger2.gif" alt="image">'
         },
         {
-            question: "What it Be?",
+            question: "Dany Question?",
             answerA: "Yup",
             answerB: "Nope",
             answerC: "Lame",
             answerD: "Dope",
-            correctPick: "Yup"
-        }
+            correctPick: "Yup",
+            image: '<img src="assets/images/dany1.jpg" alt="image">',
+            gif: '<img src="assets/images/dany2.gif" alt="image">'
+        },
+        {
+            question: "Drogo Question",
+            answerA: "Yup",
+            answerB: "Nope",
+            answerC: "Lame",
+            answerD: "Dope",
+            correctPick: "Lame",
+            image: '<img src="assets/images/drogo1.jpg" alt="image">',
+            gif: '<img src="assets/images/drogo2.gif" alt="image">'
+        },
+        {
+            question: "Joff Question?",
+            answerA: "Stabby",
+            answerB: "Shiny",
+            answerC: "Pokey",
+            answerD: "Ice",
+            correctPick: "Ice",
+            image: '<img src="assets/images/joff1.jpg" alt="image">',
+            gif: '<img src="assets/images/joff2.gif" alt="image">'
+        },
+        {
+            question: "Jon Snow Question?",
+            answerA: "Yup",
+            answerB: "Nope",
+            answerC: "Lame",
+            answerD: "Dope",
+            correctPick: "Yup",
+            image: '<img src="assets/images/jon1.jpg" alt="image">',
+            gif: '<img src="assets/images/jon2.gif" alt="image">'
+        },
+        {
+            question: "Lannister",
+            answerA: "Yup",
+            answerB: "Nope",
+            answerC: "Lame",
+            answerD: "Dope",
+            correctPick: "Lame",
+            image: '<img src="assets/images/lannister1.jpg" alt="image">',
+            gif: '<img src="assets/images/lannister2.gif" alt="image">'
+        },
+        {
+            question: "Mel question?",
+            answerA: "Stabby",
+            answerB: "Shiny",
+            answerC: "Pokey",
+            answerD: "Ice",
+            correctPick: "Ice",
+            image: '<img src="assets/images/mel1.jpg" alt="image">',
+            gif: '<img src="assets/images/mel2.gif" alt="image">'
+        },
+        {
+            question: "Sam Question?",
+            answerA: "Yup",
+            answerB: "Nope",
+            answerC: "Lame",
+            answerD: "Dope",
+            correctPick: "Yup",
+            image: '<img src="assets/images/sam1.jpg" alt="image">',
+            gif: '<img src="assets/images/sam2.gif" alt="image">'
+        },
+        {
+            question: "Bolton Question",
+            answerA: "Yup",
+            answerB: "Nope",
+            answerC: "Lame",
+            answerD: "Dope",
+            correctPick: "Lame",
+            image: '<img src="assets/images/bolton1.jpg" alt="image">',
+            gif: '<img src="assets/images/bolton2.gif" alt="image">'
+        },
+        {
+            question: "Varys Question?",
+            answerA: "Stabby",
+            answerB: "Shiny",
+            answerC: "Pokey",
+            answerD: "Ice",
+            correctPick: "Ice",
+            image: '<img src="assets/images/varys1.jpg" alt="image">',
+            gif: '<img src="assets/images/varys2.gif" alt="image">'
+        },
 
     ];
+
+    function shuffle(array) {
+        let currentIndex = array.length, temporaryValue, randomIndex;
+      
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+      
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+      
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+      
+        return array;
+      }
+
+shuffle(questions);
+console.log(questions);
 
     //  Variables that will hold our interval ID when we execute the "run" function, what question we're on and 
     // scoreboard varibles for endgame reveal
@@ -31,14 +137,16 @@ $(document).ready(function () {
     let incorrectAns = 0;
     let noAns = 0;
 
-    $(".optionBtn").hide();
+    
     $(".timer").hide();
+    $(".optionBtn").hide();
 
     //  When the start button gets clicked, question 0 loaded, show buttons and execute the run clock function.
     $(".startBtn").on("click", function () {
         reset();
 
         $(".questionDiv").text(questions[currentQuestion].question);
+        $(".questImg").html(questions[currentQuestion].image);
         $(".opt1").text(questions[currentQuestion].answerA);
         $(".opt2").text(questions[currentQuestion].answerB);
         $(".opt3").text(questions[currentQuestion].answerC);
@@ -58,6 +166,7 @@ $(document).ready(function () {
         if (userGuess === questions[currentQuestion].correctPick) {
             console.log("That's Right");
             $(".questionDiv").text("THAT'S RIGHT. The Answer is " +questions[currentQuestion].correctPick);
+            $(".questImg").html(questions[currentQuestion].gif);
             correctAns++;
             // $(".optionBtn").off();
             stop();
@@ -69,6 +178,7 @@ $(document).ready(function () {
         else {
             console.log("That's Wrong")
             $(".questionDiv").text("SORRY. The Answer was " +questions[currentQuestion].correctPick);
+            $(".questImg").html(questions[currentQuestion].gif);
             incorrectAns++;
             // $(".optionBtn").off();
             stop();
@@ -95,6 +205,7 @@ $(document).ready(function () {
             noAns++;
             // $(".optionBtn").toggle();
             $(".questionDiv").text("TIME UP. The Answer was " +questions[currentQuestion].correctPick);
+            $(".questImg").html(questions[currentQuestion].gif);
             //  Pass to stop.
             stop();
 
@@ -115,6 +226,7 @@ $(document).ready(function () {
         currentQuestion++;
         if(currentQuestion < questions.length){
         $(".questionDiv").text(questions[currentQuestion].question);
+        $(".questImg").html(questions[currentQuestion].image);
         $(".opt1").text(questions[currentQuestion].answerA);
         $(".opt2").text(questions[currentQuestion].answerB);
         $(".opt3").text(questions[currentQuestion].answerC);
@@ -128,10 +240,18 @@ $(document).ready(function () {
     }
 
     function finalScreen(){
-        $(".questionDiv").text("You Got " + correctAns + " correct! You got " + incorrectAns + " incorrect. You didn't answer " + noAns + ". Play again?");
+        $(".timer").hide();
+        $(".questionDiv").text("You Got " + correctAns + " correct! You got " + incorrectAns + " incorrect. Time Expired: " + noAns + ". Play again?");
         currentQuestion = 0; 
         $(".startBtn").text("CLICK TO PLAY AGAIN!")
         $(".startBtn").show();
+        $(".optionBtn").hide();
+
+        if (correctAns > incorrectAns && correctAns > noAns){
+            $(".questImg").html('<img src="assets/images/dancing.gif" alt="image">');
+        } else {
+            $(".questImg").html('<img src="assets/images/shame.gif" alt="image">');
+        }
 
     }
 
@@ -142,6 +262,7 @@ $(document).ready(function () {
         correctAns = 0;
         incorrectAns = 0;
         noAns = 0;
+        shuffle(questions);
     }
 
 
