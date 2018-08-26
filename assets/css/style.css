@@ -28,10 +28,15 @@
   }
 
   .question{
-      height: 400px;
+      height: 200px;
   }
 
   .option{
       margin: 5px;
       background-color: lightgreen;
+    
+  }
+
+  .timerBox{
+      height: 50px;
   }

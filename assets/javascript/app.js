@@ -1,58 +1,140 @@
 $(document).ready(function () {
 
-    // Start Button to get game going. Probably set in HTML connected to Reset Function.
-    // Question presented w/ 4 options. timer starts
+    //Questions. Array holding objects. Each object will be the question w/ 4 answers
+    //and a value showing which is true.
 
-    //  Variable that will hold our interval ID when we execute the "run" function
-    let timeLeft = 6;
+    let questions = [
+        {
+            question: "What's the name of Eddard Stark's Sword?",
+            answerA: "Stabby",
+            answerB: "Shiny",
+            answerC: "Pokey",
+            answerD: "Ice",
+            correctPick: "Ice"
+        },
+        {
+            question: "What it Be?",
+            answerA: "Yup",
+            answerB: "Nope",
+            answerC: "Lame",
+            answerD: "Dope",
+            correctPick: "Yup"
+        }
+
+    ];
+
+    //  Variables that will hold our interval ID when we execute the "run" function, what question we're on and 
+    // scoreboard varibles for endgame reveal
+    let timeLeft = 5;
     let intervalId;
+    let currentQuestion = 0;
+    let correctAns = 0;
+    let incorrectAns = 0;
+    let noAns = 0;
 
-    //  When the start button gets clicked, execute the run function.
-    $(".startBtn").on("click", run);
+    $(".optionBtn").hide();
+    $(".timer").hide();
 
-    //  The run function sets an interval
-    //  that runs the decrement function once a second.
-    //  *****BUG FIX******** 
+    //  When the start button gets clicked, question 0 loaded, show buttons and execute the run clock function.
+    $(".startBtn").on("click", function () {
+
+        $(".questionDiv").text(questions[currentQuestion].question);
+        $(".opt1").text(questions[currentQuestion].answerA);
+        $(".opt2").text(questions[currentQuestion].answerB);
+        $(".opt3").text(questions[currentQuestion].answerC);
+        $(".opt4").text(questions[currentQuestion].answerD);
+        $(".startBtn").hide();
+        $(".optionBtn").show();
+        $(".timer").show();
+        run();
+
+    });
+
+    //On-click event when user chooses an answer
+    $(".optionBtn").on("click", function () {
+        var userGuess = $(this).text();
+        // clearInterval(counter);
+
+        //If user chooses correct answer
+        if (userGuess === questions[currentQuestion].correctPick) {
+            console.log("That's Right");
+            $(".questionDiv").text("THAT'S RIGHT. The Answer is " +questions[currentQuestion].correctPick);
+            correctAns++;
+            $(".optionBtn").off();
+            stop();
+            // $(".time-div").hide();
+            // $(".answer-div").hide();
+            // $(".question-div").html(
+            //     "<h2 class='text-danger'> Correct!" + "</h2>" +
+            //     "<img src='https://media0.giphy.com/media/rTg5MCCGlpvMs/200.webp' alt='CORRECT' class='img-fluid'>"
+            // );
+        }
+
+        //If user chooses incorrect answer
+        else {
+            console.log("That's Wrong")
+            $(".questionDiv").text("SORRY. The Answer was " +questions[currentQuestion].correctPick);
+            incorrectAns++;
+            $(".optionBtn").off();
+            stop();
+            // incorrect();
+        }
+    });
+
+
+
+    //  Run starts the clock and also fires toggle decrement function once a second
     //  Clearing the intervalId prior to setting our new intervalId will not allow multiple instances.
     function run() {
         clearInterval(intervalId);
         intervalId = setInterval(decrement, 1000);
+        $(".timer").html("<h2> TIME REMAINING: " + timeLeft + "</h2>");
     }
 
-    //  The decrement function.
+    //  The decrement function for counting down the clock
     function decrement() {
-
-        //  Decrease number by one.
         timeLeft--;
-
-        //  Show the number in the #show-number tag.
-        // $(".timer").text(timeLeft);
         $(".timer").html("<h2> TIME REMAINING: " + timeLeft + "</h2>");
-
 
         //  Once number hits zero...
         if (timeLeft === 0) {
-
+            noAns++;
+            $(".optionBtn").toggle();
+            $(".questionDiv").text("TIME UP. The Answer was " +questions[currentQuestion].correctPick);
             //  ...run the stop function.
             stop();
 
-            //  Alert the user that time is up.
-            console.log("Time Up!");
         }
     }
 
     //  The stop function
     function stop() {
-        //  Clears our intervalId
-        //  We just pass the name of the interval
-        //  to the clearInterval function.
+       
         clearInterval(intervalId);
-        timeLeft = 6;
-        setTimeout(fiveSeconds, 1000 * 5);
+        timeLeft = 5;
+        setTimeout(fiveSeconds, 1000 * 3);
+        
     }
-    
+
     function fiveSeconds() {
-       run();
+        currentQuestion++;
+        if(currentQuestion <2){
+            $(".optionBtn").on();
+        $(".questionDiv").text(questions[currentQuestion].question);
+        $(".opt1").text(questions[currentQuestion].answerA);
+        $(".opt2").text(questions[currentQuestion].answerB);
+        $(".opt3").text(questions[currentQuestion].answerC);
+        $(".opt4").text(questions[currentQuestion].answerD);
+        run();
+        } else {
+            finalScreen();
+        }
+       
+        
+    }
+
+    function finalScreen(){
+        $(".questionDiv").text("You Got " + correctAns + " correct! You got " + incorrectAns + " incorrect. You didn't answer " + noAns + ". Play again?");  
     }
 
 
