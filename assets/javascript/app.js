@@ -130,7 +130,7 @@ console.log(questions);
 
     //  Variables that will hold our interval ID when we execute the "run" function, what question we're on and 
     // scoreboard varibles for endgame reveal
-    let timeLeft = 5;
+    let timeLeft = 20;
     let intervalId;
     let currentQuestion = 0;
     let correctAns = 0;
@@ -168,7 +168,7 @@ console.log(questions);
             $(".questionDiv").text("THAT'S RIGHT. The Answer is " +questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
             correctAns++;
-            // $(".optionBtn").off();
+            $(".optionBtn").toggle();
             stop();
             //     "<h2 class='text-danger'> Correct!" + "</h2>" +
             //     "<img src='https://media0.giphy.com/media/rTg5MCCGlpvMs/200.webp' alt='CORRECT' class='img-fluid'>"
@@ -180,7 +180,7 @@ console.log(questions);
             $(".questionDiv").text("SORRY. The Answer was " +questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
             incorrectAns++;
-            // $(".optionBtn").off();
+            $(".optionBtn").toggle();
             stop();
             // incorrect();
         }
@@ -203,7 +203,7 @@ console.log(questions);
         //  If time runs out...
         if (timeLeft === 0) {
             noAns++;
-            // $(".optionBtn").toggle();
+            $(".optionBtn").toggle();
             $(".questionDiv").text("TIME UP. The Answer was " +questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
             //  Pass to stop.
@@ -216,14 +216,15 @@ console.log(questions);
     function stop() {
        
         clearInterval(intervalId);
-        timeLeft = 5;
-        setTimeout(reloader, 1000 * 3);
+        timeLeft = 20;
+        setTimeout(reloader, 1000 * 4);
         
     }
 
     //cues up next question or takes you final score if you've reached the end.   
     function reloader() {
         currentQuestion++;
+        $(".optionBtn").toggle();
         if(currentQuestion < questions.length){
         $(".questionDiv").text(questions[currentQuestion].question);
         $(".questImg").html(questions[currentQuestion].image);
@@ -256,7 +257,7 @@ console.log(questions);
     }
 
     function reset(){
-        timeLeft = 5;
+        timeLeft = 20;
         intervalId;
         currentQuestion = 0;
         correctAns = 0;
