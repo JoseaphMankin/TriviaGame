@@ -26,8 +26,8 @@
   }
 
   .optionBtn{
-      background-color: black;
-      color: red;
+      background-color: white;
+      color: black;
       width: 80%;
   }
 
@@ -60,4 +60,13 @@
 
   .timerBox{
       height: 50px;
+  }
+
+  .greenWhite{
+      background-color: green;
+      color: white;
+  }
+
+  .red{
+      background-color: red;
   }

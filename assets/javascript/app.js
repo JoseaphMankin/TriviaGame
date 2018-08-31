@@ -54,7 +54,7 @@ $(document).ready(function () {
             gif: '<img src="assets/images/jon2.gif" alt="image">'
         },
         {
-            question: "What are the Lannister's house words?",
+            question: "What are the Lannister's Official house words?",
             answerA: "A Lion Never Forgets",
             answerB: "Dolla Dolla Billz, y'all",
             answerC: "Honor, Glory, Money",
@@ -108,25 +108,25 @@ $(document).ready(function () {
 
     function shuffle(array) {
         let currentIndex = array.length, temporaryValue, randomIndex;
-      
+
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
-      
-          // Pick a remaining element...
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-      
-          // And swap it with the current element.
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
-        }
-      
-        return array;
-      }
 
-shuffle(questions);
-console.log(questions);
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    shuffle(questions);
+    console.log(questions);
 
     //  Variables that will hold our interval ID when we execute the "run" function, what question we're on and 
     // scoreboard varibles for endgame reveal
@@ -137,7 +137,7 @@ console.log(questions);
     let incorrectAns = 0;
     let noAns = 0;
 
-    
+
     $(".timer").hide();
     $(".optionBtn").hide();
 
@@ -161,29 +161,32 @@ console.log(questions);
     //On-click event when user chooses an answer
     $(".optionBtn").on("click", function () {
         var userGuess = $(this).text();
+        let correctAnswer = questions[currentQuestion].correctPick;
 
         //If user chooses correct answer
         if (userGuess === questions[currentQuestion].correctPick) {
             console.log("That's Right");
-            $(".questionDiv").text("THAT'S RIGHT. The Answer is " +questions[currentQuestion].correctPick);
+            $(".timer").toggle();
+            $(".questionDiv").text("THAT'S RIGHT. The Answer is " + questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
             correctAns++;
-            $(".optionBtn").toggle();
             stop();
-            //     "<h2 class='text-danger'> Correct!" + "</h2>" +
-            //     "<img src='https://media0.giphy.com/media/rTg5MCCGlpvMs/200.webp' alt='CORRECT' class='img-fluid'>"
         }
 
         //If user chooses incorrect answer
         else {
             console.log("That's Wrong")
-            $(".questionDiv").text("SORRY. The Answer was " +questions[currentQuestion].correctPick);
+            $(".timer").toggle();
+            $(".questionDiv").text("SORRY. The Answer was " + questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
             incorrectAns++;
-            $(".optionBtn").toggle();
             stop();
-            // incorrect();
         }
+
+        //The Color Changer
+        colorChanger(correctAnswer);
+       
+
     });
 
     //ALL THE TIMER OPERATIONS START HERE
@@ -203,8 +206,8 @@ console.log(questions);
         //  If time runs out...
         if (timeLeft === 0) {
             noAns++;
-            $(".optionBtn").toggle();
-            $(".questionDiv").text("TIME UP. The Answer was " +questions[currentQuestion].correctPick);
+            $(".timer").toggle();
+            $(".questionDiv").text("TIME UP. The Answer was " + questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
             //  Pass to stop.
             stop();
@@ -214,41 +217,41 @@ console.log(questions);
 
     //  The stop function clears the interval, resets the timer and hands over reloader after 3 seconds
     function stop() {
-       
+        $(".optionBtn").attr("disabled", true);
         clearInterval(intervalId);
         timeLeft = 20;
         setTimeout(reloader, 1000 * 4);
-        
+
     }
 
     //cues up next question or takes you final score if you've reached the end.   
     function reloader() {
         currentQuestion++;
-        $(".optionBtn").toggle();
-        if(currentQuestion < questions.length){
-        $(".questionDiv").text(questions[currentQuestion].question);
-        $(".questImg").html(questions[currentQuestion].image);
-        $(".opt1").text(questions[currentQuestion].answerA);
-        $(".opt2").text(questions[currentQuestion].answerB);
-        $(".opt3").text(questions[currentQuestion].answerC);
-        $(".opt4").text(questions[currentQuestion].answerD);
-        run();
+        $(".optionBtn").removeClass("greenWhite").removeClass("red");
+        $(".optionBtn").attr("disabled", false);
+        $(".timer").toggle();
+        if (currentQuestion < questions.length) {
+            $(".questionDiv").text(questions[currentQuestion].question);
+            $(".questImg").html(questions[currentQuestion].image);
+            $(".opt1").text(questions[currentQuestion].answerA);
+            $(".opt2").text(questions[currentQuestion].answerB);
+            $(".opt3").text(questions[currentQuestion].answerC);
+            $(".opt4").text(questions[currentQuestion].answerD);
+            run();
         } else {
             finalScreen();
         }
-       
-        
     }
 
-    function finalScreen(){
+    function finalScreen() {
         $(".timer").hide();
         $(".questionDiv").text("You Got " + correctAns + " correct! You got " + incorrectAns + " incorrect. Time Expired: " + noAns + ". Play again?");
-        currentQuestion = 0; 
+        currentQuestion = 0;
         $(".startBtn").text("CLICK TO PLAY AGAIN!")
         $(".startBtn").show();
         $(".optionBtn").hide();
 
-        if (correctAns > incorrectAns && correctAns > noAns){
+        if (correctAns > incorrectAns && correctAns > noAns) {
             $(".questImg").html('<img src="assets/images/dancing.gif" alt="image">');
         } else {
             $(".questImg").html('<img src="assets/images/shame.gif" alt="image">');
@@ -256,7 +259,7 @@ console.log(questions);
 
     }
 
-    function reset(){
+    function reset() {
         timeLeft = 20;
         intervalId;
         currentQuestion = 0;
@@ -264,6 +267,32 @@ console.log(questions);
         incorrectAns = 0;
         noAns = 0;
         shuffle(questions);
+    }
+
+    function colorChanger(correctAnswer){
+
+        //refactor this with contains text
+        switch (correctAnswer) {
+            case $(".option1").text():
+            $(".option1").addClass("greenWhite");
+            $(".option2, .option3, .option4").addClass("red");
+                break;
+                case $(".option2").text():
+            $(".option2").addClass("greenWhite");
+            $(".option1, .option3, .option4").addClass("red");
+                break;
+                case $(".option3").text():
+            $(".option3").addClass("greenWhite");
+            $(".option1, .option2, .option4").addClass("red");
+                break;
+                case $(".option4").text():
+            $(".option4").addClass("greenWhite");
+            $(".option1, .option2, .option3").addClass("red");
+                break;
+        
+            default:
+                break;
+        }
     }
 
 
