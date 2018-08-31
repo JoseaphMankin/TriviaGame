@@ -1,7 +1,7 @@
 # TriviaGame
 JavaScript Timers Assignment
 
-![Alt text](assets/images/triviascreenshot.png?raw=true "Trivia Screenshot")
+![Alt text](assets/images/triviascreenshot.jpg?raw=true "Trivia Screenshot")
 
 
 - How does it work? 
