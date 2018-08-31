@@ -25,11 +25,11 @@ $(document).ready(function () {
         },
         {
             question: "What must a Dothraki do if they are defeated in battle?",
-            answerA: "Cut off their braid",
-            answerB: "Be exhiled",
-            answerC: "Be murdered",
-            answerD: "Give up their horse",
-            correctPick: "Cut off their braid",
+            answerA: "Cut Off Their Braid",
+            answerB: "Be Exhiled",
+            answerC: "Be Murdered",
+            answerD: "Give Up Their Horse",
+            correctPick: "Cut Off Their Braid",
             image: '<img src="assets/images/drogo1.jpg" alt="image">',
             gif: '<img src="assets/images/drogo2.gif" alt="image">'
         },
@@ -86,10 +86,10 @@ $(document).ready(function () {
         {
             question: "The Bolton's were reknown for what practice?",
             answerA: "Witchcraft",
-            answerB: "Skinning people alive",
-            answerC: "Selling their children",
-            answerD: "Breaking truces",
-            correctPick: "Skinning people alive",
+            answerB: "Skinning People Alive",
+            answerC: "Selling Their Children",
+            answerD: "Breaking Truces",
+            correctPick: "Skinning People Alive",
             image: '<img src="assets/images/bolton1.jpg" alt="image">',
             gif: '<img src="assets/images/bolton2.gif" alt="image">'
         },
@@ -205,10 +205,12 @@ $(document).ready(function () {
 
         //  If time runs out...
         if (timeLeft === 0) {
+            let correctAnswer = questions[currentQuestion].correctPick;
             noAns++;
             $(".timer").toggle();
             $(".questionDiv").text("TIME UP. The Answer was " + questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
+            colorChanger(correctAnswer);
             //  Pass to stop.
             stop();
 
@@ -271,7 +273,19 @@ $(document).ready(function () {
 
     function colorChanger(correctAnswer){
 
-        //refactor this with contains text
+        // if ($("button:contains(correctAnswer)")){
+        //     $(".optionBtn").addClass("greenWhite");
+        // } else {
+        //     $(".optionBtn").addClass("red");
+        // }
+        
+        // if ($("button").not("contains(correctAnswer)")){
+        //     $(".optionBtn").addClass("red");
+        // }
+
+    
+
+        // refactor this with contains text
         switch (correctAnswer) {
             case $(".option1").text():
             $(".option1").addClass("greenWhite");
