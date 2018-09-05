@@ -106,6 +106,8 @@ $(document).ready(function () {
 
     ];
 
+    //This picks the question in a random order (I'm not ashamed to say this was something I stackOverflowed)
+
     function shuffle(array) {
         let currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -129,7 +131,7 @@ $(document).ready(function () {
     console.log(questions);
 
     //  Variables that will hold our interval ID when we execute the "run" function, what question we're on and 
-    // scoreboard varibles for endgame reveal
+    // Scoreboard varibles for endgame reveal
     let timeLeft = 20;
     let intervalId;
     let currentQuestion = 0;
@@ -184,7 +186,7 @@ $(document).ready(function () {
         }
 
         //The Color Changer
-        colorChanger(correctAnswer);
+        colorChange(correctAnswer, "h3opt");
        
 
     });
@@ -210,7 +212,7 @@ $(document).ready(function () {
             $(".timer").toggle();
             $(".questionDiv").text("TIME UP. The Answer was " + questions[currentQuestion].correctPick);
             $(".questImg").html(questions[currentQuestion].gif);
-            colorChanger(correctAnswer);
+            colorChange(correctAnswer, "h3opt");
             //  Pass to stop.
             stop();
 
@@ -229,7 +231,11 @@ $(document).ready(function () {
     //cues up next question or takes you final score if you've reached the end.   
     function reloader() {
         currentQuestion++;
-        $(".optionBtn").removeClass("greenWhite").removeClass("red");
+        $(".optionBtn").css({
+            backgroundColor: "white",
+            color: "black",
+        })
+        // $(".optionBtn").removeClass("greenWhite").removeClass("red"); **THIS WAS REFACTORED**
         $(".optionBtn").attr("disabled", false);
         $(".timer").toggle();
         if (currentQuestion < questions.length) {
@@ -271,21 +277,10 @@ $(document).ready(function () {
         shuffle(questions);
     }
 
+    // Below was my original switch statement for changing the right answers green and the wrong ones red
+    // See refactored "colorChange" function below
     function colorChanger(correctAnswer){
 
-        // if ($("button:contains(correctAnswer)")){
-        //     $(".optionBtn").addClass("greenWhite");
-        // } else {
-        //     $(".optionBtn").addClass("red");
-        // }
-        
-        // if ($("button").not("contains(correctAnswer)")){
-        //     $(".optionBtn").addClass("red");
-        // }
-
-    
-
-        // refactor this with contains text
         switch (correctAnswer) {
             case $(".option1").text():
             $(".option1").addClass("greenWhite");
@@ -308,6 +303,27 @@ $(document).ready(function () {
                 break;
         }
     }
+
+//Baraka and I's refactoring solution for the colorChanger above. THIS is the current live one, but I 
+//wanted to save both for prosperity.
+
+    function colorChange(correctAnswer, buttonsClassNames) {
+  
+        let buttons = document.getElementsByClassName(`${buttonsClassNames}`);
+      
+        for (let i = 0; i < buttons.length; i++) {
+          let buttonText = buttons[i].innerText;
+          
+          if (correctAnswer === buttonText) {      
+            buttons[i].parentElement.style.backgroundColor = "#3DBF87";
+            buttons[i].parentElement.style.color = "white";
+          } else {      
+            buttons[i].parentElement.style.backgroundColor = "red";
+            buttons[i].parentElement.style.color = "white";
+          }
+        }
+      };
+      
 
 
 });
